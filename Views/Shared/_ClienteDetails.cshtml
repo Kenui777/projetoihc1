@@ -1,0 +1,26 @@
+﻿@using projetoihc.Models
+
+<div class="container mt-3">
+    <h2 class="text-primary">Detalhes do Cliente</h2>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Código:</strong> @Model.Codigo</p>
+            <p><strong>Nome Completo:</strong> @Model.NomeCompleto</p>
+            <p><strong>Data de Nascimento:</strong> @Model.DataNascimento.ToString("dd/MM/yyyy")</p>
+            <p><strong>RG:</strong> @Model.RG</p>
+            <p><strong>CPF:</strong> @Model.CPF</p>
+            <p><strong>Endereço Residencial:</strong></p>
+            <ul>
+                <li><strong>Logradouro:</strong> @Model.Endereco.Logradouro</li>
+                <li><strong>Bairro:</strong> @Model.Endereco.Bairro</li>
+                <li><strong>Cidade:</strong> @Model.Endereco.Cidade</li>
+                <li><strong>Complemento:</strong> @Model.Endereco.Complemento</li>
+                <li><strong>UF:</strong> @Model.Endereco.UF</li>
+                <li><strong>CEP:</strong> @Model.Endereco.CEP</li>
+            </ul>
+            <p><strong>Estado Civil:</strong> @Model.EstadoCivil</p>
+            <p><strong>Nome do Pai:</strong> @Model.NomePai</p>
+            <p><strong>Nome da Mãe:</strong> @Model.NomeMae</p>
+        </div>
+    </div>
+</div>

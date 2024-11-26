@@ -1,0 +1,73 @@
+﻿@using projetoihc.Models
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Criar Cliente</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @await Html.PartialAsync("_ClienteForm")
+
+            <div class="form-group">
+                <input type="submit" value="Criar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/imask"></script>
+    
+    <script>
+        // Máscaras
+        var cpfMask = IMask(
+            document.getElementById('CPF'), {
+                mask: '000.000.000-00'
+            });
+
+        var rgMask = IMask(
+            document.getElementById('RG'), {
+                mask: '00.000.000-0'
+            });
+
+        var cepMask = IMask(
+            document.getElementById('CEP'), {
+                mask: '00000-000'
+            });
+
+                           $(document).on("blur", "#CEP", function () {
+            const cep = $(this).val().replace(/\D/g, ''); // Remove caracteres não numéricos
+            if (cep && cep.length === 8) {
+                $.getJSON(`/Clientes/PreencherEndereco?cep=${cep}`, function (data) {
+                    if (data) {
+                        $("input[name='Endereco.Logradouro']").val(data.Logradouro);
+                        $("input[name='Endereco.Bairro']").val(data.Bairro);
+                        $("input[name='Endereco.Localidade']").val(data.localidade); 
+                        $("input[name='Endereco.UF']").val(data.UF);
+                    } else {
+                        alert("Endereço não encontrado!");
+                    }
+                }).fail(function () {
+                    alert("Erro ao buscar o endereço.");
+                });
+            } else {
+                alert("CEP inválido!");
+            }
+        });
+
+
+
+    </script>
+}
+
+

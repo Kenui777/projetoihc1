@@ -1,0 +1,58 @@
+﻿@model IEnumerable<projetoihc.Models.Clientes>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<h1>Lista de Clientes</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Criar Novo Cliente</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().NomeCompleto)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().DataNascimento)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().RG)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().CPF)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.Logradouro)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.Bairro)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.Cidade)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.Complemento)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.UF)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.CEP)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().EstadoCivil)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().NomePai)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().NomeMae)</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.NomeCompleto)</td>
+                <td>@Html.DisplayFor(modelItem => item.DataNascimento.ToString("dd/MM/yyyy"))</td>
+                <td>@Html.DisplayFor(modelItem => item.RG)</td>
+                <td>@Html.DisplayFor(modelItem => item.CPF)</td>
+                <td>@(item.Endereco != null ? item.Endereco.Logradouro : "Endereço não disponível")</td>
+                <td>@(item.Endereco != null ? item.Endereco.Bairro : "Bairro não disponível")</td>
+                <td>@(item.Endereco != null ? item.Endereco.Cidade : "Cidade não disponível")</td>
+                <td>@(item.Endereco != null ? item.Endereco.Complemento : "Complemento não disponível")</td>
+                <td>@(item.Endereco != null ? item.Endereco.UF : "UF não disponível")</td>
+                <td>@(item.Endereco != null ? item.Endereco.CEP : "CEP não disponível")</td>
+
+                <td>@Html.DisplayFor(modelItem => item.EstadoCivil)</td>
+                <td>@Html.DisplayFor(modelItem => item.NomePai)</td>
+                <td>@Html.DisplayFor(modelItem => item.NomeMae)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ClienteId" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.ClienteId" class="btn btn-info btn-sm">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.ClienteId" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

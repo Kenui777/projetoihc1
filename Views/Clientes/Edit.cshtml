@@ -1,0 +1,52 @@
+﻿@model Clientes
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Cliente</h1>
+
+<h4>Cliente</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ClienteId" />
+
+            @await Html.PartialAsync("_ClienteForm")
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).on("blur", "#CEP", function () {
+            const cep = $(this).val().replace(/\D/g, '');
+            if (cep && cep.length === 8) {
+                $.getJSON(`/Clientes/PreencherEndereco?cep=${cep}`, function (data) {
+                    if (data) {
+                        $("#Logradouro").val(data.logradouro);
+                        $("#Bairro").val(data.bairro);
+                        $("#Cidade").val(data.localidade);
+                        $("#UF").val(data.uf);
+                    } else {
+                        alert("Endereço não encontrado!");
+                    }
+                }).fail(function () {
+                    alert("Erro ao buscar o endereço.");
+                });
+            } else {
+                alert("CEP inválido!");
+            }
+        });
+    </script>
+}

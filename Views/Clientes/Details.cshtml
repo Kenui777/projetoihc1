@@ -1,0 +1,18 @@
+﻿@model Clientes
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalhes do Cliente</h1>
+
+<div>
+    <h4>Cliente</h4>
+    <hr />
+    @await Html.PartialAsync("_ClienteDetails", Model)
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ClienteId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
