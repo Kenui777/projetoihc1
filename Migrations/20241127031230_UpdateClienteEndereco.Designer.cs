@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace projetoihc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241127031230_UpdateClienteEndereco")]
+    partial class UpdateClienteEndereco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,8 +91,8 @@ namespace projetoihc.Migrations
 
                     b.Property<string>("CEP")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<string>("Cidade")
                         .IsRequired()
@@ -119,18 +122,12 @@ namespace projetoihc.Migrations
             modelBuilder.Entity("projetoihc.Models.Clientes", b =>
                 {
                     b.HasOne("projetoihc.Models.Endereco", "Endereco")
-                        .WithOne("Cliente")
+                        .WithOne()
                         .HasForeignKey("projetoihc.Models.Clientes", "EnderecoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Endereco");
-                });
-
-            modelBuilder.Entity("projetoihc.Models.Endereco", b =>
-                {
-                    b.Navigation("Cliente")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

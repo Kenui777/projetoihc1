@@ -1,4 +1,5 @@
 ﻿@using projetoihc.Models
+@model projetoihc.Models.Clientes
 
 @{
     ViewData["Title"] = "Create";
@@ -8,14 +9,94 @@
 <hr />
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            @await Html.PartialAsync("_ClienteForm")
+            <div class="form-group">
+                <label for="NomeCompleto" class="control-label">Nome Completo</label>
+                <input asp-for="NomeCompleto" class="form-control" id="NomeCompleto" required />
+                <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+            </div>
 
             <div class="form-group">
-                <input type="submit" value="Criar" class="btn btn-primary" />
+                <label for="DataNascimento" class="control-label">Data de Nascimento</label>
+                <input asp-for="DataNascimento" class="form-control" id="DataNascimento" type="date" required />
+                <span asp-validation-for="DataNascimento" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label for="RG" class="control-label">RG</label>
+                <input asp-for="RG" class="form-control" id="RG" required />
+                <span asp-validation-for="RG" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="CPF" class="control-label">CPF</label>
+                <input asp-for="CPF" class="form-control" id="CPF" required />
+                <span asp-validation-for="CPF" class="text-danger"></span>
+            </div>
+
+            <!-- Endereço -->
+            <div class="form-group">
+                <label for="CEP" class="control-label">CEP</label>
+                <input asp-for="Endereco.CEP" class="form-control" id="CEP" required />
+                <span asp-validation-for="Endereco.CEP" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Endereco_Logradouro" class="control-label">Logradouro</label>
+                <input asp-for="Endereco.Logradouro" class="form-control" id="Endereco_Logradouro" required />
+                <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Endereco_Bairro" class="control-label">Bairro</label>
+                <input asp-for="Endereco.Bairro" class="form-control" id="Endereco_Bairro" required />
+                <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Endereco_Cidade" class="control-label">Cidade</label>
+                <input asp-for="Endereco.Cidade" class="form-control" id="Endereco_Cidade" required />
+                <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Endereco_UF" class="control-label">UF</label>
+                <input asp-for="Endereco.UF" class="form-control" id="Endereco_UF" required />
+                <span asp-validation-for="Endereco.UF" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Endereco_Complemento" class="control-label">Complemento</label>
+                <input asp-for="Endereco.Complemento" class="form-control" id="Endereco_Complemento" />
+                <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="EstadoCivil" class="control-label">Estado Civil</label>
+                <select asp-for="EstadoCivil" class="form-control" id="EstadoCivil" required>
+                    <option value="Solteiro">Solteiro</option>
+                    <option value="Casado">Casado</option>
+                    <option value="Divorciado">Divorciado</option>
+                    <option value="Viúvo">Viúvo</option>
+                </select>
+                <span asp-validation-for="EstadoCivil" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="NomePai" class="control-label">Nome do Pai</label>
+                <input asp-for="NomePai" class="form-control" id="NomePai" />
+                <span asp-validation-for="NomePai" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="NomeMae" class="control-label">Nome da Mãe</label>
+                <input asp-for="NomeMae" class="form-control" id="NomeMae" />
+                <span asp-validation-for="NomeMae" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
     </div>
 </div>
@@ -25,49 +106,23 @@
 </div>
 
 @section Scripts {
-
-    <script src="https://cdn.jsdelivr.net/npm/imask"></script>
-    
+    <script src="~/js/site.js"></script>
     <script>
-        // Máscaras
-        var cpfMask = IMask(
-            document.getElementById('CPF'), {
-                mask: '000.000.000-00'
-            });
+        document.getElementById('CEP').addEventListener('blur', async function() {
+            var cep = this.value.replace('-', '').trim();
 
-        var rgMask = IMask(
-            document.getElementById('RG'), {
-                mask: '00.000.000-0'
-            });
+            if (cep.length === 9) {
+                const response = await fetch(`/Clientes/PreencherEndereco?cep=${cep}`);
+                const endereco = await response.json();
 
-        var cepMask = IMask(
-            document.getElementById('CEP'), {
-                mask: '00000-000'
-            });
-
-                           $(document).on("blur", "#CEP", function () {
-            const cep = $(this).val().replace(/\D/g, ''); // Remove caracteres não numéricos
-            if (cep && cep.length === 8) {
-                $.getJSON(`/Clientes/PreencherEndereco?cep=${cep}`, function (data) {
-                    if (data) {
-                        $("input[name='Endereco.Logradouro']").val(data.Logradouro);
-                        $("input[name='Endereco.Bairro']").val(data.Bairro);
-                        $("input[name='Endereco.Localidade']").val(data.localidade); 
-                        $("input[name='Endereco.UF']").val(data.UF);
-                    } else {
-                        alert("Endereço não encontrado!");
-                    }
-                }).fail(function () {
-                    alert("Erro ao buscar o endereço.");
-                });
-            } else {
-                alert("CEP inválido!");
+                if (endereco) {
+                    document.getElementById('Endereco_Logradouro').value = endereco.logradouro || '';
+                    document.getElementById('Endereco_Bairro').value = endereco.bairro || '';
+                    document.getElementById('Endereco_Cidade').value = endereco.localidade || '';
+                    document.getElementById('Endereco_UF').value = endereco.uf || '';
+                    document.getElementById('Endereco_Complemento').value = endereco.complemento || '';
+                }
             }
         });
-
-
-
     </script>
 }
-
-

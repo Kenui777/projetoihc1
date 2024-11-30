@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace projetoihc.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241130034338_RelacionamentoClientesEnderec11")]
+    partial class RelacionamentoClientesEnderec11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +41,9 @@ namespace projetoihc.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EnderecoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EnderecoId1")
                         .HasColumnType("int");
 
                     b.Property<string>("EstadoCivil")
@@ -70,6 +76,10 @@ namespace projetoihc.Migrations
                     b.HasIndex("EnderecoId")
                         .IsUnique();
 
+                    b.HasIndex("EnderecoId1")
+                        .IsUnique()
+                        .HasFilter("[EnderecoId1] IS NOT NULL");
+
                     b.ToTable("Clientes");
                 });
 
@@ -88,8 +98,8 @@ namespace projetoihc.Migrations
 
                     b.Property<string>("CEP")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<string>("Cidade")
                         .IsRequired()
@@ -119,10 +129,14 @@ namespace projetoihc.Migrations
             modelBuilder.Entity("projetoihc.Models.Clientes", b =>
                 {
                     b.HasOne("projetoihc.Models.Endereco", "Endereco")
-                        .WithOne("Cliente")
+                        .WithOne()
                         .HasForeignKey("projetoihc.Models.Clientes", "EnderecoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("projetoihc.Models.Endereco", null)
+                        .WithOne("Cliente")
+                        .HasForeignKey("projetoihc.Models.Clientes", "EnderecoId1");
 
                     b.Navigation("Endereco");
                 });

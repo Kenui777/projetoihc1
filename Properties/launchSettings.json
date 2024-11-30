@@ -4,7 +4,7 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false, // Desabilitar o lançamento automático do navegador para HTTP
       "applicationUrl": "http://localhost:5241",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -13,8 +13,8 @@
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:7238;http://localhost:5241",
+      "launchBrowser": true, // Habilitar o lançamento automático do navegador para HTTPS
+      "applicationUrl": "https://localhost:7238",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

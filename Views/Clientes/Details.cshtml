@@ -1,4 +1,4 @@
-﻿@model Clientes
+﻿@model projetoihc.Models.Clientes
 
 @{
     ViewData["Title"] = "Details";
@@ -9,10 +9,26 @@
 <div>
     <h4>Cliente</h4>
     <hr />
-    @await Html.PartialAsync("_ClienteDetails", Model)
+    <p><strong>Código:</strong> @Model.ClienteId</p>
+    <p><strong>Nome Completo:</strong> @Model.NomeCompleto</p>
+    <p><strong>Data de Nascimento:</strong> @Model.DataNascimento??.ToString("dd/MM/yyyy")</p>
+    <p><strong>RG:</strong> @Model.RG</p>
+    <p><strong>CPF:</strong> @Model.CPF</p>
+    <p><strong>Endereço:</strong></p>
+    <ul>
+        <li><strong>Logradouro:</strong> @Model.Endereco?.Logradouro ?? "Não informado"</li>
+        <li><strong>Bairro:</strong> @Model.Endereco?.Bairro ?? "Não informado"</li>
+        <li><strong>Cidade:</strong> @Model.Endereco?.Cidade ?? "Não informado"</li>
+        <li><strong>Complemento:</strong> @Model.Endereco?.Complemento ?? "Não informado"</li>
+        <li><strong>UF:</strong> @Model.Endereco?.UF ?? "Não informado"</li>
+        <li><strong>CEP:</strong> @Model.Endereco?.CEP ?? "Não informado"</li>
+    </ul>
+    <p><strong>Estado Civil:</strong> @Model.EstadoCivil</p>
+    <p><strong>Nome do Pai:</strong> @Model.NomePai ?? "Não informado"</p>
+    <p><strong>Nome da Mãe:</strong> @Model.NomeMae ?? "Não informado"</p>
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ClienteId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.ClienteId">Editar</a> |
+    <a asp-action="Index">Voltar para a lista</a>
 </div>

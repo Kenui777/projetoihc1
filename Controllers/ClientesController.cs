@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json; // Para deserializar o JSON retornado pela API ViaCEP
 using System.Net.Http; // Para fazer requisições HTTP
-using projetoihc.Models; // Adicione isso no início do arquivo
+using projetoihc.Models;
 
 namespace projetoihc.Controllers
 {
@@ -21,7 +21,7 @@ namespace projetoihc.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clientes.ToListAsync());
+            return View(await _context.Clientes.Include(c => c.Endereco).ToListAsync());
         }
 
         // GET: Clientes/Details/5
@@ -33,7 +33,7 @@ namespace projetoihc.Controllers
             }
 
             var cliente = await _context.Clientes
-                .Include(c => c.Endereco) // Incluindo o Endereço
+                .Include(c => c.Endereco)
                 .FirstOrDefaultAsync(m => m.ClienteId == id);
             if (cliente == null)
             {
@@ -52,12 +52,11 @@ namespace projetoihc.Controllers
         // POST: Clientes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClienteId,NomeCompleto,DataNascimento,RG,CPF,EstadoCivil,NomePai,NomeMae")] Clientes cliente, [Bind("Logradouro,Bairro,Localidade,Complemento,UF,CEP")] Endereco endereco)
+        public async Task<IActionResult> Create(Clientes cliente)
         {
             if (ModelState.IsValid)
             {
-                cliente.Endereco = endereco; // Associa o endereço ao cliente
-                _context.Add(cliente);
+                _context.Clientes.Add(cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -73,7 +72,7 @@ namespace projetoihc.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Clientes.Include(c => c.Endereco).FirstOrDefaultAsync(c => c.ClienteId == id);
             if (cliente == null)
             {
                 return NotFound();
@@ -84,7 +83,7 @@ namespace projetoihc.Controllers
         // POST: Clientes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClienteId,NomeCompleto,DataNascimento,RG,CPF,Logradouro,Bairro,Localidade,Complemento,UF,CEP,EstadoCivil,NomePai,NomeMae")] Clientes cliente)
+        public async Task<IActionResult> Edit(int id, Clientes cliente)
         {
             if (id != cliente.ClienteId)
             {
@@ -123,7 +122,7 @@ namespace projetoihc.Controllers
             }
 
             var cliente = await _context.Clientes
-                .Include(c => c.Endereco) // Incluindo o Endereço
+                .Include(c => c.Endereco)
                 .FirstOrDefaultAsync(m => m.ClienteId == id);
             if (cliente == null)
             {
@@ -138,55 +137,61 @@ namespace projetoihc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Clientes.Include(c => c.Endereco).FirstOrDefaultAsync(c => c.ClienteId == id);
             if (cliente != null)
             {
+                _context.Enderecos.Remove(cliente.Endereco);
                 _context.Clientes.Remove(cliente);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Método para buscar o endereço pelo CEP
+        public async Task<IActionResult> PreencherEndereco(string cep)
+        {
+            if (string.IsNullOrEmpty(cep) || cep.Length != 9 || !cep.All(char.IsDigit))
+            {
+                return Json(null); // Retorna null caso o CEP seja inválido
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetStringAsync($"https://viacep.com.br/ws/{cep}/json/");
+
+                    if (string.IsNullOrEmpty(response))
+                    {
+                        return Json(null); // Retorna null caso a resposta seja vazia
+                    }
+
+                    var endereco = JsonConvert.DeserializeObject<Endereco>(response);
+
+                    if (endereco != null && !string.IsNullOrEmpty(endereco.Logradouro))
+                    {
+                        return Json(new
+                        {
+                            logradouro = endereco.Logradouro,
+                            bairro = endereco.Bairro,
+                            cidade = endereco.Cidade,
+                            uf = endereco.UF,
+                            complemento = endereco.Complemento
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return Json(null); // Retorna null em caso de erro de conexão ou outra falha
+            }
+
+            return Json(null); // Retorna null caso o endereço não seja encontrado ou erro
         }
 
         private bool ClienteExists(int id)
         {
             return _context.Clientes.Any(e => e.ClienteId == id);
-        }
-
-        // Método para buscar o endereço pelo CEP
-        [HttpGet]
-        public async Task<IActionResult> PreencherEndereco(string cep)
-        {
-            if (string.IsNullOrEmpty(cep))
-            {
-                return BadRequest("CEP é obrigatório.");
-            }
-
-            try
-            {
-                using var client = new HttpClient();
-                var response = await client.GetStringAsync($"https://viacep.com.br/ws/{cep}/json/");
-                var endereco = JsonConvert.DeserializeObject<dynamic>(response);
-
-                if (endereco.erro != null)
-                {
-                    return NotFound("CEP inválido ou não encontrado.");
-                }
-
-                // Retorna os dados do endereço
-                return Json(new
-                {
-                    Logradouro = (string)endereco.logradouro,
-                    Bairro = (string)endereco.bairro,
-                    Cidade = (string)endereco.localidade,
-                    UF = (string)endereco.uf
-                });
-            }
-            catch (Exception ex)
-            {
-                // Caso ocorra um erro durante a requisição, retorna o erro
-                return StatusCode(500, $"Erro ao buscar o CEP: {ex.Message}");
-            }
         }
     }
 }

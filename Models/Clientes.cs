@@ -6,7 +6,7 @@ namespace projetoihc.Models
 {
     public class Clientes
     {
-        [Key] // Define a chave primária
+        [Key]
         public int ClienteId { get; set; }
 
         [Required(ErrorMessage = "O nome completo é obrigatório.")]
@@ -35,11 +35,10 @@ namespace projetoihc.Models
         [StringLength(100, ErrorMessage = "O nome da mãe deve ter no máximo 100 caracteres.")]
         public string NomeMae { get; set; }
 
-        // Chave estrangeira e relacionamento
-        [Required] // O EnderecoId é obrigatório
-        [ForeignKey("Endereco")] // Define a chave estrangeira
+        // Relacionamento com Endereco
+        [Required]
         public int EnderecoId { get; set; }
 
-        public Endereco Endereco { get; set; } // Propriedade de navegação
+        public Endereco Endereco { get; set; }
     }
 }

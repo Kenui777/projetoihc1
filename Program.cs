@@ -19,26 +19,37 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Configuração de cookies de antiforgery
+builder.Services.AddAntiforgery(options =>
+{
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;  // Garantir que o cookie só seja enviado via HTTPS
+    options.Cookie.SameSite = SameSiteMode.Strict;             // Prevenir ataques CSRF
+});
+
+// Configuração de cookies de autenticação
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;  // Garantir que o cookie de autenticação só seja enviado via HTTPS
+    options.Cookie.SameSite = SameSiteMode.Strict;             // Prevenir ataques CSRF
+});
+
 var app = builder.Build();
 
 // Configuração do pipeline de requisições
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    app.UseHsts();  // HSTS (HTTP Strict Transport Security) para forçar HTTPS
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection();  // Redireciona automaticamente para HTTPS
+app.UseStaticFiles();
 app.UseRouting();
 
-// Permitir CORS
-app.UseCors();
+app.UseCors();  // Habilitar CORS
 
-// Ativar autenticação, caso necessário
-app.UseAuthorization();
-
-// Servir arquivos estáticos (CSS, JS, imagens)
-app.UseStaticFiles();
+app.UseAuthentication();  // Autenticação de usuários
+app.UseAuthorization();   // Autorização de usuários
 
 app.MapControllerRoute(
     name: "default",

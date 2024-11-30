@@ -6,7 +6,7 @@ namespace projetoihc.Models
     public class Endereco
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Geração automática da chave
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EnderecoId { get; set; }
 
         [Required(ErrorMessage = "O Logradouro é obrigatório.")]
@@ -28,5 +28,8 @@ namespace projetoihc.Models
         [Required(ErrorMessage = "O CEP é obrigatório.")]
         [StringLength(9, MinimumLength = 9, ErrorMessage = "O CEP deve ter exatamente 8 caracteres.")]
         public string CEP { get; set; }
+
+        // Relacionamento inverso com Clientes (opcional caso seja 1 para 1)
+        public Clientes Cliente { get; set; }
     }
 }
