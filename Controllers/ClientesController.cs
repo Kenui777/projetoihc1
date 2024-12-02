@@ -63,7 +63,6 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-
         // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -140,7 +139,11 @@ namespace projetoihc.Controllers
             var cliente = await _context.Clientes.Include(c => c.Endereco).FirstOrDefaultAsync(c => c.ClienteId == id);
             if (cliente != null)
             {
-                _context.Enderecos.Remove(cliente.Endereco);
+                if (cliente.Endereco != null)
+                {
+                    _context.Enderecos.Remove(cliente.Endereco);
+                }
+
                 _context.Clientes.Remove(cliente);
                 await _context.SaveChangesAsync();
             }
@@ -150,9 +153,16 @@ namespace projetoihc.Controllers
         // Método para buscar o endereço pelo CEP
         public async Task<IActionResult> PreencherEndereco(string cep)
         {
-            if (string.IsNullOrEmpty(cep) || cep.Length != 9 || !cep.All(char.IsDigit))
+            if (string.IsNullOrEmpty(cep))
             {
-                return Json(null); // Retorna null caso o CEP seja inválido
+                return Json(null);
+            }
+
+            cep = new string(cep.Where(char.IsDigit).ToArray());
+
+            if (cep.Length != 8)
+            {
+                return Json(null);
             }
 
             try
@@ -160,21 +170,19 @@ namespace projetoihc.Controllers
                 using (var client = new HttpClient())
                 {
                     var response = await client.GetStringAsync($"https://viacep.com.br/ws/{cep}/json/");
-
                     if (string.IsNullOrEmpty(response))
                     {
-                        return Json(null); // Retorna null caso a resposta seja vazia
+                        return Json(null);
                     }
 
                     var endereco = JsonConvert.DeserializeObject<Endereco>(response);
-
                     if (endereco != null && !string.IsNullOrEmpty(endereco.Logradouro))
                     {
                         return Json(new
                         {
                             logradouro = endereco.Logradouro,
                             bairro = endereco.Bairro,
-                            cidade = endereco.Cidade,
+                            localidade = endereco.Localidade, // Alterado de Cidade para Localidade
                             uf = endereco.UF,
                             complemento = endereco.Complemento
                         });
@@ -183,10 +191,10 @@ namespace projetoihc.Controllers
             }
             catch (Exception)
             {
-                return Json(null); // Retorna null em caso de erro de conexão ou outra falha
+                return Json(null);
             }
 
-            return Json(null); // Retorna null caso o endereço não seja encontrado ou erro
+            return Json(null);
         }
 
         private bool ClienteExists(int id)

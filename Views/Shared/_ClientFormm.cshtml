@@ -1,0 +1,113 @@
+﻿@model projetoihc.Models.Clientes
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="NomeCompleto" class="control-label"></label>
+        <input asp-for="NomeCompleto" class="form-control" />
+        <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DataNascimento" class="control-label"></label>
+        <input asp-for="DataNascimento" class="form-control" type="date" />
+        <span asp-validation-for="DataNascimento" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RG" class="control-label"></label>
+        <input asp-for="RG" class="form-control" id="RG" />
+        <span asp-validation-for="RG" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CPF" class="control-label"></label>
+        <input asp-for="CPF" class="form-control" id="CPF" />
+        <span asp-validation-for="CPF" class="text-danger"></span>
+    </div>
+
+    <!-- Endereço -->
+    <div class="form-group">
+        <label asp-for="Endereco.CEP" class="control-label"></label>
+        <input asp-for="Endereco.CEP" class="form-control" id="Endereco_CEP" />
+        <span asp-validation-for="Endereco.CEP" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Endereco.Logradouro" class="control-label"></label>
+        <input asp-for="Endereco.Logradouro" class="form-control" id="Endereco_Logradouro" />
+        <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Endereco.Bairro" class="control-label"></label>
+        <input asp-for="Endereco.Bairro" class="form-control" id="Endereco_Bairro" />
+        <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Endereco.Localidade" class="control-label"></label>
+        <input asp-for="Endereco.Localidade" class="form-control" id="Endereco_Cidade" />
+        <span asp-validation-for="Endereco.Localidade" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Endereco.UF" class="control-label"></label>
+        <input asp-for="Endereco.UF" class="form-control" id="Endereco_UF" />
+        <span asp-validation-for="Endereco.UF" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Endereco.Complemento" class="control-label"></label>
+        <input asp-for="Endereco.Complemento" class="form-control" />
+        <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EstadoCivil" class="control-label"></label>
+        <select asp-for="EstadoCivil" class="form-control">
+            <option value="Solteiro">Solteiro</option>
+            <option value="Casado">Casado</option>
+            <option value="Divorciado">Divorciado</option>
+            <option value="Viúvo">Viúvo</option>
+        </select>
+        <span asp-validation-for="EstadoCivil" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NomePai" class="control-label"></label>
+        <input asp-for="NomePai" class="form-control" />
+        <span asp-validation-for="NomePai" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NomeMae" class="control-label"></label>
+        <input asp-for="NomeMae" class="form-control" />
+        <span asp-validation-for="NomeMae" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $("#Endereco_CEP").blur(function () {
+                var cep = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("PreencherEndereco", "Clientes")',
+                    data: { cep: cep },
+                    success: function (data) {
+                        if (data) {
+                            $("#Endereco_Logradouro").val(data.logradouro);
+                            $("#Endereco_Bairro").val(data.bairro);
+                            $("#Endereco_Cidade").val(data.cidade); // Certifique-se de que este campo está correto
+                            $("#Endereco_UF").val(data.uf);
+                            $("#Endereco_Complemento").val(data.complemento);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

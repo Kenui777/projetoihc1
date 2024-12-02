@@ -1,31 +1,17 @@
-﻿@model projetoihc.Models.Clientes
+﻿@using projetoihc.Models
+@model projetoihc.Models.Clientes
 
 @{
     ViewData["Title"] = "Details";
 }
 
 <h1>Detalhes do Cliente</h1>
+<hr />
 
-<div>
-    <h4>Cliente</h4>
-    <hr />
-    <p><strong>Código:</strong> @Model.ClienteId</p>
-    <p><strong>Nome Completo:</strong> @Model.NomeCompleto</p>
-    <p><strong>Data de Nascimento:</strong> @Model.DataNascimento??.ToString("dd/MM/yyyy")</p>
-    <p><strong>RG:</strong> @Model.RG</p>
-    <p><strong>CPF:</strong> @Model.CPF</p>
-    <p><strong>Endereço:</strong></p>
-    <ul>
-        <li><strong>Logradouro:</strong> @Model.Endereco?.Logradouro ?? "Não informado"</li>
-        <li><strong>Bairro:</strong> @Model.Endereco?.Bairro ?? "Não informado"</li>
-        <li><strong>Cidade:</strong> @Model.Endereco?.Cidade ?? "Não informado"</li>
-        <li><strong>Complemento:</strong> @Model.Endereco?.Complemento ?? "Não informado"</li>
-        <li><strong>UF:</strong> @Model.Endereco?.UF ?? "Não informado"</li>
-        <li><strong>CEP:</strong> @Model.Endereco?.CEP ?? "Não informado"</li>
-    </ul>
-    <p><strong>Estado Civil:</strong> @Model.EstadoCivil</p>
-    <p><strong>Nome do Pai:</strong> @Model.NomePai ?? "Não informado"</p>
-    <p><strong>Nome da Mãe:</strong> @Model.NomeMae ?? "Não informado"</p>
+<div class="row">
+    <div class="col-md-6">
+        @await Html.PartialAsync("_ClienteDetails", Model)
+    </div>
 </div>
 
 <div>

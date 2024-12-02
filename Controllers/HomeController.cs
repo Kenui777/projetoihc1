@@ -1,6 +1,6 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using projetoihc.Models;
+using System.Diagnostics;
 
 namespace projetoihc.Controllers
 {

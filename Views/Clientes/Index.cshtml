@@ -13,20 +13,28 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().NomeCompleto)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().DataNascimento)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().RG)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().CPF)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.Logradouro)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.Bairro)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.Cidade)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.Complemento)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.UF)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Endereco.CEP)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().EstadoCivil)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().NomePai)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().NomeMae)</th>
-            <th>Ações</th>
+            @if (Model != null && Model.Any())
+            {
+                <th>@Html.DisplayNameFor(model => model.First().NomeCompleto)</th>
+                <th>@Html.DisplayNameFor(model => model.First().DataNascimento)</th>
+                <th>@Html.DisplayNameFor(model => model.First().RG)</th>
+                <th>@Html.DisplayNameFor(model => model.First().CPF)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Endereco.Logradouro)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Endereco.Bairro)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Endereco.Localidade)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Endereco.Complemento)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Endereco.UF)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Endereco.CEP)</th>
+                <th>@Html.DisplayNameFor(model => model.First().EstadoCivil)</th>
+                <th>@Html.DisplayNameFor(model => model.First().NomePai)</th>
+                <th>@Html.DisplayNameFor(model => model.First().NomeMae)</th>
+                <th>Ações</th>
+            }
+            else
+            {
+                <p>Sem dados disponíveis.</p>
+            }
+
         </tr>
     </thead>
     <tbody>
@@ -39,7 +47,7 @@
                 <td>@Html.DisplayFor(modelItem => item.CPF)</td>
                 <td>@(item.Endereco != null ? item.Endereco.Logradouro : "Endereço não disponível")</td>
                 <td>@(item.Endereco != null ? item.Endereco.Bairro : "Bairro não disponível")</td>
-                <td>@(item.Endereco != null ? item.Endereco.Cidade : "Cidade não disponível")</td>
+                <td>@(item.Endereco != null ? item.Endereco.Localidade : "Cidade não disponível")</td>
                 <td>@(item.Endereco != null ? item.Endereco.Complemento : "Complemento não disponível")</td>
                 <td>@(item.Endereco != null ? item.Endereco.UF : "UF não disponível")</td>
                 <td>@(item.Endereco != null ? item.Endereco.CEP : "CEP não disponível")</td>

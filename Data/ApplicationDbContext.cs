@@ -1,5 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using projetoihc.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 public class ApplicationDbContext : DbContext
 {

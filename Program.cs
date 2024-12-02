@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+// Configuração de logging
+builder.Services.AddLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.AddConsole(); // Adiciona o console como provedor de logging
+});
 
 // Adicionar os serviços de controladores e views
 builder.Services.AddControllersWithViews();
@@ -29,8 +37,17 @@ builder.Services.AddAntiforgery(options =>
 // Configuração de cookies de autenticação
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;  // Garantir que o cookie de autenticação só seja enviado via HTTPS
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;  // Permite cookies somente via HTTPS
     options.Cookie.SameSite = SameSiteMode.Strict;             // Prevenir ataques CSRF
+});
+
+// Configuração do Kestrel para suportar HTTPS
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(7030, listenOptions =>
+    {
+        listenOptions.UseHttps();  // Habilita HTTPS na porta 7030
+    });
 });
 
 var app = builder.Build();

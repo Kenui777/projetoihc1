@@ -1,20 +1,27 @@
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "sslPort": 44312, // Porta SSL configurada
+      "applicationUrl": "https://localhost:44312" // URL HTTPS para IIS Express
+    }
+  },
   "profiles": {
-    "http": {
+    "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false, // Desabilitar o lançamento automático do navegador para HTTP
-      "applicationUrl": "http://localhost:5241",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7030", // URL HTTPS principal
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true, // Habilitar o lançamento automático do navegador para HTTPS
-      "applicationUrl": "https://localhost:7238",
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:44312", // URL HTTPS alternativa para IIS Express
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
