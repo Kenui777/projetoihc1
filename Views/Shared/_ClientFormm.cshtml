@@ -1,4 +1,5 @@
-﻿@model projetoihc.Models.Clientes
+﻿
+@model projetoihc.Models.Clientes
 
 <form asp-action="Create" method="post">
     <div class="form-group">
@@ -101,7 +102,7 @@
                         if (data) {
                             $("#Endereco_Logradouro").val(data.logradouro);
                             $("#Endereco_Bairro").val(data.bairro);
-                            $("#Endereco_Cidade").val(data.cidade); // Certifique-se de que este campo está correto
+                           $("#Endereco_Localidade").val(data.localidade);
                             $("#Endereco_UF").val(data.uf);
                             $("#Endereco_Complemento").val(data.complemento);
                         }
@@ -111,3 +112,4 @@
         });
     </script>
 }
+

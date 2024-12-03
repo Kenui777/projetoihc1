@@ -1,5 +1,7 @@
+
 html {
     font-size: 14px;
+    background-color: #f4f8fc; 
 }
 
 @media (min-width: 768px) {
@@ -8,24 +10,110 @@ html {
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+
+:root {
+    --blue-light: #66b3ff; 
+    --blue-dark: #258cfb; 
+    --white: #ffffff;
+    --gray-light: #f7f7f7;
+    --gray-dark: #333333;
 }
 
-html {
-    position: relative;
-    min-height: 100%;
+header {
+    background-color: var(--blue-light);
+    padding: 10px 0;
 }
 
-body {
-    margin-bottom: 60px;
+    header .nav-item .nav-link {
+        color: var(--blue-dark);
+        transition: color 0.3s ease;
+    }
+
+        header .nav-item .nav-link:hover {
+            color: var(--white);
+        }
+
+.navbar {
+    background-color: var(--blue-light);
+    border-bottom: 1px solid var(--blue-dark);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-    color: var(--bs-secondary-color);
-    text-align: end;
+.navbar-toggler-icon {
+    background-color: var(--blue-dark);
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-    text-align: start;
+h1, h2, h3 {
+    color: var(--blue-dark);
+    font-weight: bold;
+}
+
+
+.btn-primary {
+    background-color: var(--blue-dark);
+    border-color: var(--blue-dark);
+}
+
+    .btn-primary:hover {
+        background-color: var(--blue-light);
+        border-color: var(--blue-light);
+    }
+
+/* Formulários */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+    .form-control:focus {
+        border-color: var(--blue-dark);
+        box-shadow: 0 0 0 0.1rem var(--blue-light);
+    }
+
+footer {
+    background-color: var(--blue-dark);
+    color: var(--white);
+    padding: 20px 0;
+}
+
+    footer a {
+        color: var(--white);
+    }
+
+        footer a:hover {
+            color: var(--blue-light);
+        }
+
+
+.container {
+    margin-top: 30px;
+}
+
+.main {
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+}
+
+.text-muted {
+    color: var(--gray-dark);
+}
+
+.text-dark {
+    color: var(--gray-dark);
+}
+
+.text-danger {
+    color: red;
+}
+
+@media (max-width: 768px) {
+    .navbar-collapse {
+        text-align: center;
+    }
+
+    .container {
+        padding: 10px;
+    }
 }

@@ -29,7 +29,7 @@ namespace projetoihc.Models
         [StringLength(9, MinimumLength = 9, ErrorMessage = "O CEP deve ter exatamente 9 caracteres.")]
         public string CEP { get; set; } = string.Empty;
 
-        // Chave estrangeira para Clientes
+       
         [ForeignKey("Cliente")]
         public int ClienteId { get; set; }
 

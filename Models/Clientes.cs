@@ -35,9 +35,8 @@ namespace projetoihc.Models
         [StringLength(100, ErrorMessage = "O nome da mãe deve ter no máximo 100 caracteres.")]
         public string NomeMae { get; set; } = string.Empty;
 
-        // Relacionamento com Endereco
         [ForeignKey("Endereco")]
-        public int? EnderecoId { get; set; } // Permitir nulo até que o endereço seja criado
+        public int? EnderecoId { get; set; }
 
         [Required]
         public Endereco Endereco { get; set; } = new Endereco();

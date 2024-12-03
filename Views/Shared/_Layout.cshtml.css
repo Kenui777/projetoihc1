@@ -1,58 +1,108 @@
-﻿<!DOCTYPE html >
-<html lang="en" >
-<head >
-<meta charset="utf-8" / >
-<meta name="viewport" content="width=device-width, initial-scale=1.0" / >
-<title > @ViewData["Title"] - projetoihc</title >
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" / >
-<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" / >
-<link rel="stylesheet" href="~/projetoihc.styles.css" asp-append-version="true" / >
-</head >
-<body >
-<header >
-<li class="nav-item" >
-<a class="nav-link text-dark" asp-controller="Clientes" asp-action="Index" > Clientes</a >
-</li >
+﻿
+body {
+    font-family: 'Open Sans', sans-serif; 
+    background-color: #f8f9fa; 
+    color: #343a40; 
+    margin: 0;
+    padding: 0;
+}
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" >
-<div class="container-fluid" >
-<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" > projetoihc</a >
-<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-aria-expanded="false" aria-label="Toggle navigation" >
-<span class="navbar-toggler-icon" > </span >
-</button >
-<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" >
-<ul class="navbar-nav flex-grow-1" >
-<li class="nav-item" >
-<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" > Home</a >
-</li >
-<li class="nav-item" >
-<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy" > Privacy</a >
-</li >
-</ul >
-</div >
-</div >
-</nav >
-</header >
+header {
+    background-color: #ffffff; 
+    border-bottom: 1px solid #e1e1e1; 
+}
 
-<div class="container" >
-<main role="main" class="pb-3" >
-@RenderBody()
-</main >
-</div >
+    header .navbar {
+        padding: 0.5rem 1rem; 
+    }
 
-<footer class="border-top footer text-muted" >
-<div class="container" >
-&copy; 2024 - projetoihc - <a asp-area="" asp-controller="Home" asp-action="Privacy" > Privacy</a >
-</div >
-</footer >
-<!-- Scripts necessários para o funcionamento -->
-<script src="~/lib/jquery/dist/jquery.min.js" > </script >
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" > </script >
-<script src="https://cdnjs.cloudflare.com/ajax/libs/imask/7.6.1/imask.min.js" > </script >
+.navbar-brand {
+    font-weight: bold;
+    color: #007bff; 
+    font-size: 1.5rem;
+}
 
-<script src="~/js/site.js" asp-append-version="true" > </script >
+.navbar-toggler-icon {
+    background-color: #007bff; 
+}
 
-@await RenderSectionAsync("Scripts", required: false)
-</body >
-</html >
+
+.nav-item .nav-link {
+    color: #007bff;
+}
+
+    .nav-item .nav-link:hover {
+        color: #0056b3; 
+    }
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem; 
+}
+
+
+footer {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-top: 1px solid #e1e1e1;
+}
+
+    footer .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    footer a {
+        color: #007bff; 
+    }
+
+        footer a:hover {
+            color: #0056b3;
+        }
+
+
+main {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+footer {
+    background-color: #ffffff; 
+    border-top: 1px solid #e1e1e1;
+}
+
+
+.navbar-collapse {
+    justify-content: flex-end; 
+}
+
+.navbar-nav {
+    margin-left: auto;
+}
+
+    .navbar-nav .nav-item {
+        margin-right: 20px; 
+    }
+
+
+.navbar-toggler {
+    border-color: #007bff; 
+}
+
+.navbar-toggler-icon {
+    background-color: #007bff;
+}
+
+
+@media (max-width: 768px) {
+    .navbar-nav {
+        margin-top: 10px;
+    }
+
+    .navbar-collapse {
+        text-align: center;
+    }
+}

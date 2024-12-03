@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json; // Para deserializar o JSON retornado pela API ViaCEP
-using System.Net.Http; // Para fazer requisições HTTP
+using Newtonsoft.Json; 
+using System.Net.Http;
 using projetoihc.Models;
 
 namespace projetoihc.Controllers
@@ -18,13 +18,13 @@ namespace projetoihc.Controllers
             _context = context;
         }
 
-        // GET: Clientes
+     
         public async Task<IActionResult> Index()
         {
             return View(await _context.Clientes.Include(c => c.Endereco).ToListAsync());
         }
 
-        // GET: Clientes/Details/5
+       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,13 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-        // GET: Clientes/Create
+
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Clientes/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Clientes cliente)
@@ -63,7 +63,7 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-        // GET: Clientes/Edit/5
+      
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,7 +79,7 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-        // POST: Clientes/Edit/5
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Clientes cliente)
@@ -112,7 +112,7 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-        // GET: Clientes/Delete/5
+       
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +131,7 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-        // POST: Clientes/Delete/5
+       
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -150,7 +150,6 @@ namespace projetoihc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Método para buscar o endereço pelo CEP
         public async Task<IActionResult> PreencherEndereco(string cep)
         {
             if (string.IsNullOrEmpty(cep))
@@ -182,7 +181,7 @@ namespace projetoihc.Controllers
                         {
                             logradouro = endereco.Logradouro,
                             bairro = endereco.Bairro,
-                            localidade = endereco.Localidade, // Alterado de Cidade para Localidade
+                            localidade = endereco.Localidade, 
                             uf = endereco.UF,
                             complemento = endereco.Complemento
                         });

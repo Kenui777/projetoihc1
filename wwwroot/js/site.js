@@ -14,9 +14,9 @@
     if (cepInput) {
         IMask(cepInput, { mask: '00000-000' });
 
-        // Evento de busca de endereço por CEP
+        
         cepInput.addEventListener('blur', function () {
-            const cep = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+            const cep = this.value.replace(/\D/g, ''); 
             if (cep.length === 8) {
                 fetch(`https://viacep.com.br/ws/${cep}/json/`)
                     .then(response => {

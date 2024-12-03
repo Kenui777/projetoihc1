@@ -1,0 +1,79 @@
+﻿/* Estilo Futurista para as Views */
+.futuristic-style {
+    background: linear-gradient(135deg, #00c6ff, #007bff); /* Gradiente ciano para azul */
+    color: #fff; /* Texto branco para contraste */
+    font-family: 'Open Sans', sans-serif;
+    padding: 20px;
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #007bff; 
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
+}
+
+    .futuristic-style:hover {
+        transform: scale(1.02); 
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.1); 
+    }
+
+   
+    .futuristic-style h1, .futuristic-style h2, .futuristic-style h3, .futuristic-style h4, .futuristic-style h5, .futuristic-style h6 {
+        color: #00c6ff; 
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+    }
+
+    
+    .futuristic-style a {
+        color: #00c6ff; 
+        text-decoration: none; 
+        transition: color 0.3s ease-in-out;
+    }
+
+        .futuristic-style a:hover {
+            color: #007bff; 
+            text-decoration: underline; 
+        }
+
+    .futuristic-style .btn {
+        background: #00c6ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .futuristic-style .btn:hover {
+            background: #007bff; 
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+    .futuristic-style input, .futuristic-style select, .futuristic-style textarea {
+        background: rgba(255, 255, 255, 0.1); 
+        border: 1px solid #00c6ff; 
+        color: #fff; 
+        padding: 10px;
+        border-radius: 5px;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+        .futuristic-style input:focus, .futuristic-style select:focus, .futuristic-style textarea:focus {
+            border-color: #007bff; 
+            outline: none; 
+        }
+
+    
+    .futuristic-style .card {
+        background: rgba(0, 0, 0, 0.2);
+        color: #fff;
+        border: 1px solid #007bff;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+        .futuristic-style .card:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }

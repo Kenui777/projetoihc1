@@ -1,16 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using projetoihc.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 public class ApplicationDbContext : DbContext
 {
     public DbSet<Clientes> Clientes { get; set; }
     public DbSet<Endereco> Enderecos { get; set; }
 
-    // Construtor que aceita DbContextOptions<ApplicationDbContext> 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
@@ -20,32 +16,21 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configuração do relacionamento de 1 para 1 entre Clientes e Endereco
+        // Relacionamento 1:1 entre Cliente e Endereco
         modelBuilder.Entity<Clientes>()
             .HasOne(c => c.Endereco)
-            .WithOne(e => e.Cliente)  // Agora especificando o Cliente como a navegação inversa
+            .WithOne(e => e.Cliente)
             .HasForeignKey<Clientes>(c => c.EnderecoId)
-            .OnDelete(DeleteBehavior.Restrict); // Evita exclusão em cascata
+            .OnDelete(DeleteBehavior.Restrict);
 
-        // Caso queira garantir que o EnderecoId no Cliente seja único
         modelBuilder.Entity<Clientes>()
             .HasIndex(c => c.EnderecoId)
-            .IsUnique(); // Garante que o EnderecoId seja único, ou seja, um endereço está vinculado a um único cliente
+            .IsUnique();
 
-        // Configuração para o Endereco, caso precise de mais detalhes sobre o relacionamento
         modelBuilder.Entity<Endereco>()
             .HasOne(e => e.Cliente)
             .WithOne(c => c.Endereco)
             .HasForeignKey<Clientes>(c => c.EnderecoId)
-            .OnDelete(DeleteBehavior.Restrict); // Evita exclusão em cascata também no lado do Endereco
+            .OnDelete(DeleteBehavior.Restrict);
     }
-
-    // Se necessário, você pode configurar explicitamente o provedor de banco de dados aqui
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     if (!optionsBuilder.IsConfigured)
-    //     {
-    //         optionsBuilder.UseSqlServer("Sua string de conexão");
-    //     }
-    // }
 }
