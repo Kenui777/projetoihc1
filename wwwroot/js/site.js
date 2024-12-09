@@ -1,45 +1,38 @@
-﻿document.addEventListener('DOMContentLoaded', function () {
-    // Configuração de máscaras
-    const cpfInput = document.getElementById('CPF');
-    if (cpfInput) {
-        IMask(cpfInput, { mask: '000.000.000-00' });
-    }
+﻿
+        $(document).ready(function () {
+            var cpfMask = IMask(document.getElementById('CPF'), {
+                mask: '000.000.000-00'
+            });
 
-    const rgInput = document.getElementById('RG');
-    if (rgInput) {
-        IMask(rgInput, { mask: '00.000.000-0' });
-    }
+            var rgMask = IMask(document.getElementById('RG'), {
+                mask: '00.000.000-0'
+            });
 
-    const cepInput = document.getElementById('Endereco_CEP');
-    if (cepInput) {
-        IMask(cepInput, { mask: '00000-000' });
+            $('#CEP').on('input', function () {
+                var value = $(this).val().replace(/\D/g, '');
+                if (value.length > 5) {
+                    value = value.slice(0, 5) + '-' + value.slice(5);
+                }
+                $(this).val(value);
+            });
 
-        
-        cepInput.addEventListener('blur', function () {
-            const cep = this.value.replace(/\D/g, ''); 
-            if (cep.length === 8) {
-                fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Erro na resposta da API');
-                        return response.json();
-                    })
-                    .then(data => {
+            $('#CEP').on('blur', function () {
+                var cep = $(this).val().replace(/\D/g, '');
+                if (cep.length === 8) {
+                    $.getJSON(`https://viacep.com.br/ws/${cep}/json/`, function (data) {
                         if (!data.erro) {
-                            document.querySelector("input[name='Endereco.Logradouro']").value = data.logradouro || '';
-                            document.querySelector("input[name='Endereco.Bairro']").value = data.bairro || '';
-                            document.querySelector("input[name='Endereco.Localidade']").value = data.localidade || ''; // Alterado de Cidade para Localidade
-                            document.querySelector("input[name='Endereco.UF']").value = data.uf || '';
-                            document.querySelector("input[name='Endereco.Complemento']").value = data.complemento || '';
+                            $('#Logradouro').val(data.logradouro);
+                            $('#Bairro').val(data.bairro);
+                            $('#Localidade').val(data.localidade);
+                            $('#UF').val(data.uf);
                         } else {
-                            alert("Endereço não encontrado!");
+                            $('#Logradouro, #Bairro, #Localidade, #UF').val('');
+                            alert('CEP não encontrado.');
                         }
-                    })
-                    .catch(() => {
-                        alert("Erro ao buscar o endereço.");
+                    }).fail(function () {
+                        alert('Erro ao buscar o CEP.');
                     });
-            } else {
-                alert("CEP inválido! Digite um CEP com 8 dígitos.");
-            }
+                }
+            });
         });
-    }
-});
+    

@@ -7,60 +7,38 @@
 <h1>Lista de Clientes</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Criar Novo Cliente</a>
+    <a asp-action="Create" class="btn btn-success btn-sm">Criar Novo Cliente</a>
 </p>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            @if (Model != null && Model.Any())
-            {
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
                 <th>@Html.DisplayNameFor(model => model.First().NomeCompleto)</th>
                 <th>@Html.DisplayNameFor(model => model.First().DataNascimento)</th>
-                <th>@Html.DisplayNameFor(model => model.First().RG)</th>
                 <th>@Html.DisplayNameFor(model => model.First().CPF)</th>
-                <th>@Html.DisplayNameFor(model => model.First().Endereco.Logradouro)</th>
-                <th>@Html.DisplayNameFor(model => model.First().Endereco.Bairro)</th>
-                <th>@Html.DisplayNameFor(model => model.First().Endereco.Localidade)</th>
-                <th>@Html.DisplayNameFor(model => model.First().Endereco.Complemento)</th>
-                <th>@Html.DisplayNameFor(model => model.First().Endereco.UF)</th>
-                <th>@Html.DisplayNameFor(model => model.First().Endereco.CEP)</th>
-                <th>@Html.DisplayNameFor(model => model.First().EstadoCivil)</th>
-                <th>@Html.DisplayNameFor(model => model.First().NomePai)</th>
-                <th>@Html.DisplayNameFor(model => model.First().NomeMae)</th>
                 <th>Ações</th>
-            }
-            else
-            {
-                <p>Sem dados disponíveis.</p>
-            }
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.NomeCompleto)</td>
-                <td>@Html.DisplayFor(modelItem => item.DataNascimento.ToString("dd/MM/yyyy"))</td>
-                <td>@Html.DisplayFor(modelItem => item.RG)</td>
-                <td>@Html.DisplayFor(modelItem => item.CPF)</td>
-                <td>@(item.Endereco != null ? item.Endereco.Logradouro : "Endereço não disponível")</td>
-                <td>@(item.Endereco != null ? item.Endereco.Bairro : "Bairro não disponível")</td>
-                <td>@(item.Endereco != null ? item.Endereco.Localidade : "Cidade não disponível")</td>
-                <td>@(item.Endereco != null ? item.Endereco.Complemento : "Complemento não disponível")</td>
-                <td>@(item.Endereco != null ? item.Endereco.UF : "UF não disponível")</td>
-                <td>@(item.Endereco != null ? item.Endereco.CEP : "CEP não disponível")</td>
-
-                <td>@Html.DisplayFor(modelItem => item.EstadoCivil)</td>
-                <td>@Html.DisplayFor(modelItem => item.NomePai)</td>
-                <td>@Html.DisplayFor(modelItem => item.NomeMae)</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ClienteId" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.ClienteId" class="btn btn-info btn-sm">Detalhes</a>
-                    <a asp-action="Delete" asp-route-id="@item.ClienteId" class="btn btn-danger btn-sm">Excluir</a>
-                </td>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NomeCompleto</td>
+                    <td>@item.DataNascimento.ToString("dd/MM/yyyy")</td>
+                    <td>@item.CPF</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.ClienteId" class="btn btn-info btn-sm">Detalhes</a>
+                        <a asp-action="Edit" asp-route-id="@item.ClienteId" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.ClienteId" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-warning">Nenhum cliente encontrado.</p>
+}

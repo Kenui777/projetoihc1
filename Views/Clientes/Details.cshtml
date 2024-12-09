@@ -1,8 +1,7 @@
-﻿@using projetoihc.Models
-@model projetoihc.Models.Clientes
+﻿@model projetoihc.Models.Clientes
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Cliente";
 }
 
 <h1>Detalhes do Cliente</h1>
@@ -10,11 +9,11 @@
 
 <div class="row">
     <div class="col-md-6">
-        @await Html.PartialAsync("_ClienteDetails", Model)
+        @await Html.PartialAsync("ClienteDetails", Model)
     </div>
 </div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ClienteId">Editar</a> |
-    <a asp-action="Index">Voltar para a lista</a>
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.ClienteId" class="btn btn-primary btn-sm">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary btn-sm">Voltar para a lista</a>
 </div>

@@ -1,10 +1,10 @@
-﻿@model Clientes
+﻿@model projetoihc.Models.Clientes
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Cliente";
 }
 
-<h1>Edit Cliente</h1>
+<h1>Editar Cliente</h1>
 
 <h4>Cliente</h4>
 <hr />
@@ -14,39 +14,61 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ClienteId" />
 
-            @await Html.PartialAsync("_ClienteForm")
+            @await Html.PartialAsync("_ClientFormm")
 
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group mt-3">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Voltar para a lista</a>
 </div>
 
+
 @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.0.7/imask.min.js"></script>
     <script>
-        $(document).on("blur", "#CEP", function () {
-            const cep = $(this).val().replace(/\D/g, '');
-            if (cep && cep.length === 8) {
-                $.getJSON(`/Clientes/PreencherEndereco?cep=${cep}`, function (data) {
-                    if (data) {
-                        $("#Logradouro").val(data.logradouro);
-                        $("#Bairro").val(data.bairro);
-                        $("#Cidade").val(data.localidade);
-                        $("#UF").val(data.uf);
-                    } else {
-                        alert("Endereço não encontrado!");
-                    }
-                }).fail(function () {
-                    alert("Erro ao buscar o endereço.");
-                });
-            } else {
-                alert("CEP inválido!");
-            }
+        $(document).ready(function () {
+            var cpfMask = IMask(document.getElementById('CPF'), {
+                mask: '000.000.000-00'
+            });
+
+            var rgMask = IMask(document.getElementById('RG'), {
+                mask: '00.000.000-0'
+            });
+
+            $('#CEP').on('input', function () {
+                var value = $(this).val().replace(/\D/g, '');
+                if (value.length > 5) {
+                    value = value.slice(0, 5) + '-' + value.slice(5);
+                }
+                $(this).val(value);
+            });
+
+            $('#CEP').on('blur', function () {
+                var cep = $(this).val().replace(/\D/g, '');
+                if (cep.length === 8) {
+                    $.getJSON(`https://viacep.com.br/ws/${cep}/json/`, function (data) {
+                        if (!data.erro) {
+                            $('#Logradouro').val(data.logradouro);
+                            $('#Bairro').val(data.bairro);
+                            $('#Localidade').val(data.localidade);
+                            $('#UF').val(data.uf);
+                        } else {
+                            $('#Logradouro, #Bairro, #Localidade, #UF').val('');
+                            alert('CEP não encontrado.');
+                        }
+                    }).fail(function () {
+                        alert('Erro ao buscar o CEP.');
+                    });
+                }
+            });
         });
     </script>
 }

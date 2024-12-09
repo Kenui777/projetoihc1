@@ -1,5 +1,4 @@
-﻿
-@model projetoihc.Models.Clientes
+﻿@model projetoihc.Models.Clientes
 
 <form asp-action="Create" method="post">
     <div class="form-group">
@@ -16,51 +15,50 @@
 
     <div class="form-group">
         <label asp-for="RG" class="control-label"></label>
-        <input asp-for="RG" class="form-control" id="RG" />
+        <input asp-for="RG" class="form-control" />
         <span asp-validation-for="RG" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="CPF" class="control-label"></label>
-        <input asp-for="CPF" class="form-control" id="CPF" />
+        <input asp-for="CPF" class="form-control" />
         <span asp-validation-for="CPF" class="text-danger"></span>
     </div>
 
-    <!-- Endereço -->
     <div class="form-group">
-        <label asp-for="Endereco.CEP" class="control-label"></label>
-        <input asp-for="Endereco.CEP" class="form-control" id="Endereco_CEP" />
-        <span asp-validation-for="Endereco.CEP" class="text-danger"></span>
+        <label asp-for="CEP" class="control-label"></label>
+        <input asp-for="CEP" class="form-control" id="CEP" />
+        <span asp-validation-for="CEP" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Endereco.Logradouro" class="control-label"></label>
-        <input asp-for="Endereco.Logradouro" class="form-control" id="Endereco_Logradouro" />
-        <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
+        <label asp-for="Logradouro" class="control-label"></label>
+        <input asp-for="Logradouro" class="form-control" id="Logradouro" />
+        <span asp-validation-for="Logradouro" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Endereco.Bairro" class="control-label"></label>
-        <input asp-for="Endereco.Bairro" class="form-control" id="Endereco_Bairro" />
-        <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+        <label asp-for="Bairro" class="control-label"></label>
+        <input asp-for="Bairro" class="form-control" id="Bairro" />
+        <span asp-validation-for="Bairro" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Endereco.Localidade" class="control-label"></label>
-        <input asp-for="Endereco.Localidade" class="form-control" id="Endereco_Cidade" />
-        <span asp-validation-for="Endereco.Localidade" class="text-danger"></span>
+        <label asp-for="Localidade" class="control-label"></label>
+        <input asp-for="Localidade" class="form-control" id="Localidade" />
+        <span asp-validation-for="Localidade" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Endereco.UF" class="control-label"></label>
-        <input asp-for="Endereco.UF" class="form-control" id="Endereco_UF" />
-        <span asp-validation-for="Endereco.UF" class="text-danger"></span>
+        <label asp-for="UF" class="control-label"></label>
+        <input asp-for="UF" class="form-control" id="UF" />
+        <span asp-validation-for="UF" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Endereco.Complemento" class="control-label"></label>
-        <input asp-for="Endereco.Complemento" class="form-control" />
-        <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+        <label asp-for="Complemento" class="control-label"></label>
+        <input asp-for="Complemento" class="form-control" id="Complemento" />
+        <span asp-validation-for="Complemento" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -85,31 +83,50 @@
         <input asp-for="NomeMae" class="form-control" />
         <span asp-validation-for="NomeMae" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
+    <button type="submit" class="btn btn-primary">Criar</button>
 </form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/6.0.7/imask.min.js"></script>
     <script>
         $(document).ready(function () {
-            $("#Endereco_CEP").blur(function () {
-                var cep = $(this).val();
-                $.ajax({
-                    url: '@Url.Action("PreencherEndereco", "Clientes")',
-                    data: { cep: cep },
-                    success: function (data) {
-                        if (data) {
-                            $("#Endereco_Logradouro").val(data.logradouro);
-                            $("#Endereco_Bairro").val(data.bairro);
-                           $("#Endereco_Localidade").val(data.localidade);
-                            $("#Endereco_UF").val(data.uf);
-                            $("#Endereco_Complemento").val(data.complemento);
+            var cpfMask = IMask(document.getElementById('CPF'), {
+                mask: '000.000.000-00'
+            });
+
+            var rgMask = IMask(document.getElementById('RG'), {
+                mask: '00.000.000-0'
+            });
+
+            $('#CEP').on('input', function () {
+                var value = $(this).val().replace(/\D/g, '');
+                if (value.length > 5) {
+                    value = value.slice(0, 5) + '-' + value.slice(5);
+                }
+                $(this).val(value);
+            });
+
+            $('#CEP').on('blur', function () {
+                var cep = $(this).val().replace(/\D/g, '');
+                if (cep.length === 8) {
+                    $.getJSON(`https://viacep.com.br/ws/${cep}/json/`, function (data) {
+                        if (!data.erro) {
+                            $('#Logradouro').val(data.logradouro);
+                            $('#Bairro').val(data.bairro);
+                            $('#Localidade').val(data.localidade);
+                            $('#UF').val(data.uf);
+                        } else {
+                            $('#Logradouro, #Bairro, #Localidade, #UF').val('');
+                            alert('CEP não encontrado.');
                         }
-                    }
-                });
+                    }).fail(function () {
+                        alert('Erro ao buscar o CEP.');
+                    });
+                }
             });
         });
     </script>
 }
-

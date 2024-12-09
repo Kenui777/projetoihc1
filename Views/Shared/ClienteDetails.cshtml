@@ -4,19 +4,19 @@
     <h2 class="text-primary">Detalhes do Cliente</h2>
     <div class="card">
         <div class="card-body">
-            <p><strong>ID:</strong> @Model.ClienteId</p> 
+            <p><strong>ID:</strong> @Model.ClienteId</p>
             <p><strong>Nome Completo:</strong> @Model.NomeCompleto</p>
             <p><strong>Data de Nascimento:</strong> @Model.DataNascimento.ToString("dd/MM/yyyy")</p>
             <p><strong>RG:</strong> @Model.RG</p>
             <p><strong>CPF:</strong> @Model.CPF</p>
             <p><strong>Endereço Residencial:</strong></p>
             <ul>
-                <li><strong>Logradouro:</strong> @Model.Endereco.Logradouro</li>
-                <li><strong>Bairro:</strong> @Model.Endereco.Bairro</li>
-                <li><strong>Localidade:</strong> @Model.Endereco.Localidade</li>
-                <li><strong>Complemento:</strong> @Model.Endereco.Complemento</li>
-                <li><strong>UF:</strong> @Model.Endereco.UF</li>
-                <li><strong>CEP:</strong> @Model.Endereco.CEP</li>
+                <li><strong>Logradouro:</strong> @Model.Logradouro</li>
+                <li><strong>Bairro:</strong> @Model.Bairro</li>
+                <li><strong>Localidade:</strong> @Model.Localidade</li>
+                <li><strong>Complemento:</strong> @Model.Complemento</li>
+                <li><strong>UF:</strong> @Model.UF</li>
+                <li><strong>CEP:</strong> @Model.CEP</li>
             </ul>
             <p><strong>Estado Civil:</strong> @Model.EstadoCivil</p>
             <p><strong>Nome do Pai:</strong> @Model.NomePai</p>

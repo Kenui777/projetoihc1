@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json; 
+using Newtonsoft.Json;
 using System.Net.Http;
 using projetoihc.Models;
 
@@ -18,13 +18,11 @@ namespace projetoihc.Controllers
             _context = context;
         }
 
-     
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clientes.Include(c => c.Endereco).ToListAsync());
+            return View(await _context.Clientes.ToListAsync());
         }
 
-       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,7 +31,6 @@ namespace projetoihc.Controllers
             }
 
             var cliente = await _context.Clientes
-                .Include(c => c.Endereco)
                 .FirstOrDefaultAsync(m => m.ClienteId == id);
             if (cliente == null)
             {
@@ -43,12 +40,10 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-
         public IActionResult Create()
         {
             return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -60,10 +55,11 @@ namespace projetoihc.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ModelState.Clear();
             return View(cliente);
         }
 
-      
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -71,7 +67,7 @@ namespace projetoihc.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes.Include(c => c.Endereco).FirstOrDefaultAsync(c => c.ClienteId == id);
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.ClienteId == id);
             if (cliente == null)
             {
                 return NotFound();
@@ -79,7 +75,6 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Clientes cliente)
@@ -112,7 +107,6 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-       
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -121,7 +115,6 @@ namespace projetoihc.Controllers
             }
 
             var cliente = await _context.Clientes
-                .Include(c => c.Endereco)
                 .FirstOrDefaultAsync(m => m.ClienteId == id);
             if (cliente == null)
             {
@@ -131,70 +124,19 @@ namespace projetoihc.Controllers
             return View(cliente);
         }
 
-       
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cliente = await _context.Clientes.Include(c => c.Endereco).FirstOrDefaultAsync(c => c.ClienteId == id);
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.ClienteId == id);
             if (cliente != null)
             {
-                if (cliente.Endereco != null)
-                {
-                    _context.Enderecos.Remove(cliente.Endereco);
-                }
-
                 _context.Clientes.Remove(cliente);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
-
-        public async Task<IActionResult> PreencherEndereco(string cep)
-        {
-            if (string.IsNullOrEmpty(cep))
-            {
-                return Json(null);
-            }
-
-            cep = new string(cep.Where(char.IsDigit).ToArray());
-
-            if (cep.Length != 8)
-            {
-                return Json(null);
-            }
-
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    var response = await client.GetStringAsync($"https://viacep.com.br/ws/{cep}/json/");
-                    if (string.IsNullOrEmpty(response))
-                    {
-                        return Json(null);
-                    }
-
-                    var endereco = JsonConvert.DeserializeObject<Endereco>(response);
-                    if (endereco != null && !string.IsNullOrEmpty(endereco.Logradouro))
-                    {
-                        return Json(new
-                        {
-                            logradouro = endereco.Logradouro,
-                            bairro = endereco.Bairro,
-                            localidade = endereco.Localidade, 
-                            uf = endereco.UF,
-                            complemento = endereco.Complemento
-                        });
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return Json(null);
-            }
-
-            return Json(null);
-        }
+     
 
         private bool ClienteExists(int id)
         {

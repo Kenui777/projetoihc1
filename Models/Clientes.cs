@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace projetoihc.Models
 {
@@ -35,10 +34,23 @@ namespace projetoihc.Models
         [StringLength(100, ErrorMessage = "O nome da mãe deve ter no máximo 100 caracteres.")]
         public string NomeMae { get; set; } = string.Empty;
 
-        [ForeignKey("Endereco")]
-        public int? EnderecoId { get; set; }
+        [Required(ErrorMessage = "O CEP é obrigatório.")]
+        [StringLength(9, MinimumLength = 9, ErrorMessage = "O CEP deve ter exatamente 8 caracteres.")]
+        public string CEP { get; set; } = string.Empty;
 
-        [Required]
-        public Endereco Endereco { get; set; } = new Endereco();
+        [StringLength(150, ErrorMessage = "O Logradouro não pode exceder 150 caracteres.")]
+        public string Logradouro { get; set; } = string.Empty;
+
+        [StringLength(50, ErrorMessage = "O Bairro não pode exceder 50 caracteres.")]
+        public string Bairro { get; set; } = string.Empty;
+
+        [StringLength(50, ErrorMessage = "A Localidade não pode exceder 50 caracteres.")]
+        public string Localidade { get; set; } = string.Empty;
+
+        [StringLength(2, ErrorMessage = "O UF deve ter 2 caracteres.")]
+        public string UF { get; set; } = string.Empty;
+
+        [StringLength(100, ErrorMessage = "O Complemento não pode exceder 100 caracteres.")]
+        public string Complemento { get; set; } = string.Empty;
     }
 }
